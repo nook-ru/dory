@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dory (0.6.4)
+    dory (1.0.1)
       activesupport (~> 5.2)
       colorize (~> 0.8)
       ptools (~> 1.3)
