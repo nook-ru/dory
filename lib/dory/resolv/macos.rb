@@ -63,7 +63,7 @@ module Dory
         end
         self.resolv_files.each do |filename|
           puts "Requesting sudo to write to #{filename}".green
-          Bash.run_command("echo -e '#{self.resolv_contents}' | sudo tee #{Shellwords.escape(filename)} >/dev/null")
+          Bash.run_command("echo -e '#{self.resolv_contents}' | sudo /usr/bin/tee #{Shellwords.escape(filename)} >/dev/null")
         end
       rescue DinghyError => e
         puts e.message.red
