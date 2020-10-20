@@ -8,7 +8,7 @@ module Dory
       setting = Dory::Config.settings[:dory][:nginx_proxy][:image]
       return setting if setting
       certs_dir && !certs_dir.empty? \
-        ? 'codekitchen/dinghy-http-proxy:2.5.10' \
+        ? 'codekitchen/dinghy-http-proxy:latest' \
         : 'freedomben/dory-http-proxy:2.5.9.1'
     end
 
@@ -20,9 +20,21 @@ module Dory
       Dory::Config.settings[:dory][:nginx_proxy][:ssl_certs_dir]
     end
 
+    def self.conf_dir
+      Dory::Config.settings[:dory][:nginx_proxy][:conf_dir]
+    end
+
     def self.certs_arg
       if certs_dir && !certs_dir.empty?
         "-v #{certs_dir}:/etc/nginx/certs"
+      else
+        ''
+      end
+    end
+
+    def self.conf_arg
+      if conf_dir && !conf_dir.empty?
+        "-v #{conf_dir}:/etc/nginx/conf.d/host/"
       else
         ''
       end
@@ -43,7 +55,7 @@ module Dory
     end
 
     def self.run_command
-      "docker run -d -p #{http_port}:80 #{self.tls_arg} #{self.certs_arg} "\
+      "docker run -d -p #{http_port}:80 #{self.tls_arg} #{self.certs_arg} #{self.conf_arg} "\
         "-v /var/run/docker.sock:/tmp/docker.sock -e " \
         "'CONTAINER_NAME=#{Shellwords.escape(self.container_name)}' --name " \
         "'#{Shellwords.escape(self.container_name)}' " \
