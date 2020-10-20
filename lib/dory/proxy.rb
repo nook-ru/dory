@@ -20,8 +20,8 @@ module Dory
       Dory::Config.settings[:dory][:nginx_proxy][:ssl_certs_dir]
     end
 
-    def self.conf_dir
-      Dory::Config.settings[:dory][:nginx_proxy][:conf_dir]
+    def self.nginx_conf
+      Dory::Config.settings[:dory][:nginx_proxy][:nginx_conf]
     end
 
     def self.certs_arg
@@ -33,8 +33,8 @@ module Dory
     end
 
     def self.conf_arg
-      if conf_dir && !conf_dir.empty?
-        "-v #{conf_dir}:/etc/nginx/conf.d/host/"
+      if nginx_conf && !nginx_conf.empty?
+        "-v #{nginx_conf}:/etc/nginx/conf.d/host.conf"
       else
         ''
       end
